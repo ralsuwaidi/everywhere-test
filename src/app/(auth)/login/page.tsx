@@ -2,9 +2,8 @@
 
 import { useState, FormEvent } from 'react';
 import axios from 'axios';
-import { loginUser } from '@/utils/api';
 import { useRouter } from 'next/navigation';
-import { saveAuthToken } from '@/utils/auth';
+import useAuthStore from '@/store/useAuthStore';
 
 
 export default function Page() {
@@ -13,17 +12,14 @@ export default function Page() {
     const [error, setError] = useState('');
     const [token, setToken] = useState('');
     const router = useRouter();
+    const { login } = useAuthStore();
 
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
 
         try {
-            const data = await loginUser(email, password);
-            saveAuthToken(data.token);
-
-            setToken(data.token);
-            console.log('Token:', data.token);
+            await login(email, password);
             router.push('/villas');
 
         } catch (error) {
