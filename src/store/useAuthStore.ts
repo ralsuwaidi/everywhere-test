@@ -1,6 +1,6 @@
 // src/store/useAuthStore.ts
 
-import create from "zustand";
+import { create } from "zustand";
 import { loginUser, getCurrentUser } from "@/utils/api";
 
 interface AuthState {

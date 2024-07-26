@@ -1,3 +1,5 @@
+'use client';
+
 import { Avatar } from '@/components/catalyst/avatar'
 import {
     Dropdown,
@@ -20,6 +22,7 @@ import {
     SidebarSpacer,
 } from '@/components/catalyst/sidebar'
 import { SidebarLayout } from '@/components/catalyst/sidebar-layout'
+import useAuthStore from '@/store/useAuthStore'
 import {
     ArrowRightStartOnRectangleIcon,
     ChevronDownIcon,
@@ -181,9 +184,9 @@ export default function Sidebar({ children }: SidebarProps) {
                                 <span className="flex min-w-0 items-center gap-3">
                                     <Avatar src="https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" className="size-10" square alt="" />
                                     <span className="min-w-0">
-                                        <span className="block truncate text-sm/5 font-medium text-zinc-950 dark:text-white">Erica</span>
+                                        <span className="block truncate text-sm/5 font-medium text-zinc-950 dark:text-white">{useAuthStore().user?.name || "no name"}</span>
                                         <span className="block truncate text-xs/5 font-normal text-zinc-500 dark:text-zinc-400">
-                                            erica@example.com
+                                            {useAuthStore().user?.email}
                                         </span>
                                     </span>
                                 </span>
