@@ -23,6 +23,7 @@ import {
 } from '@/components/catalyst/sidebar'
 import { SidebarLayout } from '@/components/catalyst/sidebar-layout'
 import useAuthStore from '@/store/useAuthStore'
+import { getGravatarUrl } from '@/utils/gravatar';
 import {
     ArrowRightStartOnRectangleIcon,
     ChevronDownIcon,
@@ -44,12 +45,27 @@ import {
     Square2StackIcon,
     TicketIcon,
 } from '@heroicons/react/20/solid'
+import { useEffect } from 'react';
 
 interface SidebarProps {
     children: React.ReactNode
 }
 
 export default function Sidebar({ children }: SidebarProps) {
+
+    const { user, fetchCurrentUser } = useAuthStore();
+
+    useEffect(() => {
+        console.log(user, "dwww");
+        if (user === null) {
+            const fetchData = async () => {
+                await fetchCurrentUser();
+            };
+            fetchData();
+        }
+    }, [user, fetchCurrentUser]);
+
+
 
     return (
         <SidebarLayout
@@ -138,25 +154,9 @@ export default function Sidebar({ children }: SidebarProps) {
                     </SidebarHeader>
                     <SidebarBody>
                         <SidebarSection>
-                            <SidebarItem href="/">
+                            <SidebarItem href="/villas">
                                 <HomeIcon />
-                                <SidebarLabel>Home</SidebarLabel>
-                            </SidebarItem>
-                            <SidebarItem href="/events">
-                                <Square2StackIcon />
-                                <SidebarLabel>Events</SidebarLabel>
-                            </SidebarItem>
-                            <SidebarItem href="/orders">
-                                <TicketIcon />
-                                <SidebarLabel>Orders</SidebarLabel>
-                            </SidebarItem>
-                            <SidebarItem href="/settings">
-                                <Cog6ToothIcon />
-                                <SidebarLabel>Settings</SidebarLabel>
-                            </SidebarItem>
-                            <SidebarItem href="/broadcasts">
-                                <MegaphoneIcon />
-                                <SidebarLabel>Broadcasts</SidebarLabel>
+                                <SidebarLabel>Villas</SidebarLabel>
                             </SidebarItem>
                         </SidebarSection>
                         <SidebarSection className="max-lg:hidden">
@@ -182,16 +182,28 @@ export default function Sidebar({ children }: SidebarProps) {
                         <Dropdown>
                             <DropdownButton as={SidebarItem}>
                                 <span className="flex min-w-0 items-center gap-3">
-                                    <Avatar src="https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" className="size-10" square alt="" />
+                                    <Avatar
+                                        src={getGravatarUrl(user?.email || 'default@example.com')}
+                                        className="size-10"
+                                        square
+                                        alt=""
+                                    />
                                     <span className="min-w-0">
-                                        <span className="block truncate text-sm/5 font-medium text-zinc-950 dark:text-white">{useAuthStore().user?.name || "no name"}</span>
+                                        <span className="block truncate text-sm/5 font-medium text-zinc-950 dark:text-white">
+                                            {user?.name || 'no name'}
+                                        </span>
                                         <span className="block truncate text-xs/5 font-normal text-zinc-500 dark:text-zinc-400">
-                                            {useAuthStore().user?.email}
+                                            {user?.email}
                                         </span>
                                     </span>
                                 </span>
                                 <ChevronUpIcon />
                             </DropdownButton>
+
+
+
+
+
                             <DropdownMenu className="min-w-64" anchor="top start">
                                 <DropdownItem href="/my-profile">
                                     <UserIcon />

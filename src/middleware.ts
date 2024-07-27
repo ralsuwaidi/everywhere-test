@@ -1,7 +1,6 @@
 import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
-import { getAuthToken } from "./utils/auth";
 
-const protectedRoutes = ["/villas"];
+const protectedRoutes = ["/villas", "/"];
 
 export function middleware(request: NextRequest, event: NextFetchEvent) {
   const { pathname } = request.nextUrl;
@@ -27,5 +26,5 @@ export function middleware(request: NextRequest, event: NextFetchEvent) {
 }
 
 export const config = {
-  matcher: ["/villas/:path*"],
+  matcher: ["/villas/:path*", "/"],
 };
