@@ -39,6 +39,7 @@ import {
     HomeIcon,
     InboxIcon,
     MagnifyingGlassIcon,
+    PlusCircleIcon,
     MegaphoneIcon,
     QuestionMarkCircleIcon,
     SparklesIcon,
@@ -76,8 +77,8 @@ export default function Sidebar({ children }: SidebarProps) {
                         <NavbarItem href="/search" aria-label="Search">
                             <MagnifyingGlassIcon />
                         </NavbarItem>
-                        <NavbarItem href="/inbox" aria-label="Inbox">
-                            <InboxIcon />
+                        <NavbarItem href="/villas/create" aria-label="create-villa">
+                            <PlusCircleIcon />
                         </NavbarItem>
                         <Dropdown>
                             <DropdownButton as={NavbarItem}>
@@ -146,9 +147,9 @@ export default function Sidebar({ children }: SidebarProps) {
                                 <MagnifyingGlassIcon />
                                 <SidebarLabel>Search</SidebarLabel>
                             </SidebarItem>
-                            <SidebarItem href="/inbox">
-                                <InboxIcon />
-                                <SidebarLabel>Inbox</SidebarLabel>
+                            <SidebarItem href="/villas/create">
+                                <PlusCircleIcon />
+                                <SidebarLabel>Create Villa</SidebarLabel>
                             </SidebarItem>
                         </SidebarSection>
                     </SidebarHeader>
