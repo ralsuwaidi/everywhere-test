@@ -1,33 +1,29 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import useAuthStore from '@/store/useAuthStore';
+
+
+
 
 
 export default function Page() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const [token, setToken] = useState('');
     const router = useRouter();
-    const { login } = useAuthStore();
-
+    const { login, loading } = useAuthStore();
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+        setError('');
 
         try {
             await login(email, password);
             router.push('/villas');
-
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                setError(error.response?.data?.detail || 'Failed to log in');
-            } else {
-                setError('An unexpected error occurred');
-            }
+            setError('Failed to log in. Please check your credentials and try again.');
         }
     };
 
@@ -110,9 +106,11 @@ export default function Page() {
                         <div>
                             <button
                                 type="submit"
-                                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                disabled={loading}
+                                className={`flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-indigo-500'
+                                    } focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
                             >
-                                Sign in
+                                {loading ? 'Signing in...' : 'Sign in'}
                             </button>
                         </div>
                     </form>
@@ -128,3 +126,4 @@ export default function Page() {
         </>
     );
 }
+

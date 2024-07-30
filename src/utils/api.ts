@@ -24,3 +24,8 @@ export const createVilla = async (villaData: any) => {
   const response = await axiosInstance.post("/villas/", villaData);
   return response.data;
 };
+
+export const getVillaBySlug = async (slug: string) => {
+  const response = await axiosInstance.get(`/villas/${slug}/`);
+  return response.data;
+};
