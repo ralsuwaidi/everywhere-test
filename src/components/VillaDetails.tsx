@@ -1,13 +1,21 @@
 import React from 'react';
 import { DescriptionDetails, DescriptionList, DescriptionTerm } from './catalyst/description-list';
-import { Divider } from './catalyst/divider';
 import { Text } from './catalyst/text';
 import { Button } from './catalyst/button';
 import { PlusIcon } from '@heroicons/react/16/solid';
+import UploadImageBtn from './UploadImageBtn';
+import { Badge } from './catalyst/badge';
+import CreateRoomAlert from './AddRoomBtn';
+import { deleteRoom } from '@/utils/api';
 
-const VillaDetails: React.FC<Villa> = ({ villa }) => (
+const VillaDetails: React.FC<Villa> = ({ villa }: Villa) => (
     <>
-        <p className="text-3xl mb-8">{villa.name}</p>
+        <div className='mb-8'>
+            <p className="text-3xl">{villa.name}</p>
+            <div className='flex space-x-4'>
+                <Badge>{villa.review_status == "DR" ? "Draft" : "Published"}</Badge>
+            </div>
+        </div>
 
         <DescriptionList>
             <DescriptionTerm>Name</DescriptionTerm>
@@ -58,8 +66,8 @@ const VillaDetails: React.FC<Villa> = ({ villa }) => (
 
         <p className='text-2xl mt-8 mb-4 font-semibold'>Rooms</p>
         {villa.rooms.map((room, index) => (
-            <div >
-                <Text>Room {index + 1}</Text>
+            <div className='mt-8'>
+                <Text >Room {index + 1}</Text>
                 <DescriptionList key={room.id} >
                     <DescriptionTerm>Room Name</DescriptionTerm>
                     <DescriptionDetails>{room.name}</DescriptionDetails>
@@ -79,16 +87,33 @@ const VillaDetails: React.FC<Villa> = ({ villa }) => (
                     <DescriptionTerm>Max Occupancy</DescriptionTerm>
                     <DescriptionDetails>{room.max_occupancy}</DescriptionDetails>
                 </DescriptionList>
+                <Button className=' hover:cursor-pointer text-end' color='red' onClick={() => {
+                    deleteRoom(villa.slug, room.id.toString())
+                    window.location.reload()
+                }}>Delete</Button>
             </div>
         ))}
 
+
+        <p className='text-2xl mt-8 mb-4 font-semibold'>Images</p>
+        <div className='mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+            {villa.images.map((image, index) => (
+                <div key={index} className="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg">
+                    <img
+                        src={image.image}
+                        alt={image.image}
+                        className="object-cover w-full h-full max-h-56"
+                    />
+                </div>
+            ))}
+        </div>
         <div className='mt-8 flex space-x-4'>
             <Button>
                 <PlusIcon />
-                Add Room</Button>
-            <Button>
-                <PlusIcon />
-                Add Image</Button>
+                Add Room
+            </Button>
+            <UploadImageBtn slug={villa.slug} />
+            <CreateRoomAlert villaSlug={villa.slug} />
         </div>
     </>
 );
