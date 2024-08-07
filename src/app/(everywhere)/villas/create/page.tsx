@@ -6,7 +6,7 @@ import { Divider } from '@/components/catalyst/divider';
 import { Description, Field, Fieldset, Label, Legend } from '@/components/catalyst/fieldset';
 import { Input } from '@/components/catalyst/input';
 import { Textarea } from '@/components/catalyst/textarea';
-import { createVilla } from '@/utils/api'; // Adjust the import path as necessary
+import { createVilla } from '@/lib/api'; // Adjust the import path as necessary
 import { Button } from '@/components/catalyst/button';
 
 export default function Page() {

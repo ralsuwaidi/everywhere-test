@@ -3,7 +3,7 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
-import { loginUser } from '@/utils/api';
+import { loginUser } from '@/lib/api';
 import axios from 'axios';
 
 const LoginForm: React.FC = () => {

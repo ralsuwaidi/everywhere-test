@@ -1,13 +1,23 @@
 // src/utils/api.ts
-
+import Cookies from "js-cookie";
 import axiosInstance from "@/lib/axiosConfig";
 
 export const loginUser = async (username: string, password: string) => {
-  const response = await axiosInstance.post("/auth-token/", {
-    username,
-    password,
-  });
-  return response.data;
+  try {
+    const response = await axiosInstance.post("/auth-token/", {
+      username,
+      password,
+    });
+
+    console.log("server token: ", response.data.token);
+
+    // Save the token in cookies
+    Cookies.set("auth-token", response.data.token);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error logging in:", error);
+  }
 };
 
 export const getVillas = async () => {
@@ -30,6 +40,25 @@ export const getVillaBySlug = async (slug: string) => {
   return response.data;
 };
 
+export const getRooms = async (slug: string) => {
+  const response = await axiosInstance.get(`/villas/${slug}/rooms/`);
+  return response.data;
+};
+
+export const getPricing = async (slug: string) => {
+  const response = await axiosInstance.get(`/villas/${slug}/base-price/`);
+  return response.data;
+};
+
+export const patchPricing = async (slug: string, pricing: number[]) => {
+  console.log({
+    pricing: pricing,
+  });
+  const response = await axiosInstance.patch(`/villas/${slug}/base-price/`, {
+    prices: pricing,
+  });
+  return response.data;
+};
 export const deleteRoom = async (slug: string, roomId: string) => {
   const response = await axiosInstance.delete(
     `/villas/${slug}/rooms/${roomId}/`
@@ -53,12 +82,29 @@ export const uploadVillaImages = async (slug: string, image: File) => {
   return response.data;
 };
 
-export const createVillaRoom = async (
+export const createRoom = async (
   villaSlug: string,
   roomData: Omit<Room, "id">
 ) => {
   const response = await axiosInstance.post(
     `/villas/${villaSlug}/rooms/`,
+    roomData
+  );
+  return response.data;
+};
+
+export const getRoom = async (slug: string, roomId: string) => {
+  const response = await axiosInstance.get(`/villas/${slug}/rooms/${roomId}/`);
+  return response.data;
+};
+
+export const patchRoom = async (
+  slug: string,
+  roomId: string,
+  roomData: Partial<Omit<Room, "id">>
+) => {
+  const response = await axiosInstance.patch(
+    `/villas/${slug}/rooms/${roomId}/`,
     roomData
   );
   return response.data;

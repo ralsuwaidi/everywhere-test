@@ -1,7 +1,7 @@
 import { Alert, AlertActions, AlertDescription, AlertTitle } from '@/components/catalyst/alert'
 import { Button } from '@/components/catalyst/button'
 import { useState } from 'react'
-import { uploadVillaImages } from '@/utils/api'
+import { uploadVillaImages } from '@/lib/api'
 import { PlusIcon } from '@heroicons/react/16/solid'
 
 function UploadImageBtn({ slug }: { slug: string }) {

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getVillas } from '@/utils/api';
+import { getVillas } from '@/lib/api';
 import useAuthStore from '@/store/useAuthStore';
 import VillaTable from '@/components/VillaTable';
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Alert, AlertActions, AlertDescription, AlertTitle } from '@/components/catalyst/alert';
 import { Button } from '@/components/catalyst/button';
-import { createVillaRoom } from '@/utils/api';
+import { createVillaRoom } from '@/lib/api';
 import { PlusIcon } from '@heroicons/react/16/solid';
 import { Description, Field, FieldGroup, Fieldset, Label, Legend } from '@/components/catalyst/fieldset';
 import { Input } from '@/components/catalyst/input';

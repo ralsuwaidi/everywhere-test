@@ -1,7 +1,7 @@
 // src/store/useAuthStore.ts
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { loginUser, getCurrentUser } from "@/utils/api";
+import { loginUser, getCurrentUser } from "@/lib/api";
 
 interface User {
   name: string;

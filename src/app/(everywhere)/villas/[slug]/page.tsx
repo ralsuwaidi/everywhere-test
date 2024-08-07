@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import useAuthStore from '@/store/useAuthStore';
-import { getVillaBySlug } from '@/utils/api';
+import { getVillaBySlug } from '@/lib/api';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import ErrorBoundary from '@/components/ErrorBoundry';
 import VillaDetails from '@/components/VillaDetails';
