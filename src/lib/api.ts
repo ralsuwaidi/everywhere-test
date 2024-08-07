@@ -109,3 +109,30 @@ export const patchRoom = async (
   );
   return response.data;
 };
+
+export const getDeals = async (slug: string) => {
+  const response = await axiosInstance.get(`/villas/${slug}/deals/`);
+  return response.data;
+};
+
+export const deleteDeal = async (slug: string, dealId: string) => {
+  await axiosInstance.delete(`/villas/${slug}/deals/${dealId}/`);
+};
+
+export const createDeal = (slug: string, dealData: Omit<Deal, "id">) => {
+  return axiosInstance
+    .post(`/villas/${slug}/deals/`, dealData)
+    .then((response) => response.data)
+    .catch((error) => {
+      if (error.response) {
+        // Return detailed error information
+        return Promise.reject(error.response.data);
+      } else if (error.request) {
+        // Handle request errors
+        return Promise.reject({ message: "No response from server" });
+      } else {
+        // Handle general errors
+        return Promise.reject({ message: error.message });
+      }
+    });
+};

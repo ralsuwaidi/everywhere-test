@@ -85,6 +85,12 @@ const VillaDetails: React.FC<Villa> = ({ villa }: Villa) => {
                 <Button className='hover:cursor-pointer' onClick={() => router.push(`${villa.slug}/rooms/`)}>
                     Rooms
                 </Button>
+                <Button className='hover:cursor-pointer' onClick={() => router.push(`${villa.slug}/pricing/`)}>
+                    Pricing
+                </Button>
+                <Button className='hover:cursor-pointer' onClick={() => router.push(`${villa.slug}/deals/`)}>
+                    Deals
+                </Button>
             </div>
         </>
     )
