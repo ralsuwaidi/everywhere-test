@@ -9,8 +9,6 @@ export const loginUser = async (username: string, password: string) => {
       password,
     });
 
-    console.log("server token: ", response.data.token);
-
     // Save the token in cookies
     Cookies.set("auth-token", response.data.token);
 
@@ -51,9 +49,6 @@ export const getPricing = async (slug: string) => {
 };
 
 export const patchPricing = async (slug: string, pricing: number[]) => {
-  console.log({
-    pricing: pricing,
-  });
   const response = await axiosInstance.patch(`/villas/${slug}/base-price/`, {
     prices: pricing,
   });
@@ -135,4 +130,21 @@ export const createDeal = (slug: string, dealData: Omit<Deal, "id">) => {
         return Promise.reject({ message: error.message });
       }
     });
+};
+
+export const getDeal = async (slug: string, dealId: string) => {
+  const response = await axiosInstance.get(`/villas/${slug}/deals/${dealId}/`);
+  return response.data;
+};
+
+export const updateDeal = async (
+  slug: string,
+  dealId: string,
+  dealData: Omit<Deal, "id">
+) => {
+  const response = await axiosInstance.patch(
+    `/villas/${slug}/deals/${dealId}/`,
+    dealData
+  );
+  return response.data;
 };

@@ -34,7 +34,6 @@ const RoomFormPage = ({ params }: { params: { slug: string, id: string } }) => {
 
     useEffect(() => {
         const fetchRoomData = async () => {
-            console.log(params.id)
             try {
                 const response = await getRoom(params.slug, params.id);
                 setRoom(response);

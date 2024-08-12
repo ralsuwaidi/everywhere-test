@@ -1,34 +1,73 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/catalyst/input';
 import { Text } from '@/components/catalyst/text';
 import { Button } from '@/components/catalyst/button';
 import { Field, FieldGroup, Fieldset, Label, Legend } from '@/components/catalyst/fieldset';
 import { Dropdown, DropdownButton, DropdownItem, DropdownMenu } from '@/components/catalyst/dropdown';
-import { createDeal } from '@/lib/api';  // API function to create a deal
+import { getDeal, updateDeal } from '@/lib/api';  // API functions to get and update a deal
 import { Checkbox, CheckboxField, CheckboxGroup } from '@/components/catalyst/checkbox';
 
-const initialDealData: Omit<Deal, 'id'> = {
-    name: '',
-    deal_type: 'PERCENTAGE',
-    discount_value: 0,
-    display_start_date: '',
-    display_end_date: '',
-    usage_start_date: '',
-    usage_end_date: '',
-    max_nights_of_deal: 0,
-    min_nights: 0,
-    applicable_days: [true, true, true, true, true, true, true],  // Default to all days available
-};
+interface Deal {
+    id: number;
+    name: string;
+    deal_type: string;
+    discount_value: number;
+    display_start_date: string;
+    display_end_date: string;
+    usage_start_date: string;
+    usage_end_date: string;
+    max_nights_of_deal: number;
+    min_nights: number;
+    applicable_days: boolean[];
+}
 
-const CreateDealPage = ({ params }: { params: { slug: string } }) => {
-    const [formData, setFormData] = useState<Omit<Deal, 'id'>>(initialDealData);
+const DealFormPage = ({ params }: { params: { slug: string, dealId: string } }) => {
+    const [deal, setDeal] = useState<Deal | null>(null);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState<any>(null);
-    const [loading, setLoading] = useState(false);
-    const [dealType, setDealType] = useState('PERCENTAGE');
+    const [formData, setFormData] = useState<Omit<Deal, 'id'>>({
+        name: '',
+        deal_type: 'PERCENTAGE',
+        discount_value: 0,
+        display_start_date: '',
+        display_end_date: '',
+        usage_start_date: '',
+        usage_end_date: '',
+        max_nights_of_deal: 0,
+        min_nights: 0,
+        applicable_days: [true, true, true, true, true, true, true],
+    });
     const router = useRouter();
+
+    useEffect(() => {
+        const fetchDealData = async () => {
+            try {
+                const response = await getDeal(params.slug, params.dealId);
+                setDeal(response);
+                setFormData({
+                    name: response.name,
+                    deal_type: response.deal_type,
+                    discount_value: response.discount_value,
+                    display_start_date: response.display_start_date,
+                    display_end_date: response.display_end_date,
+                    usage_start_date: response.usage_start_date,
+                    usage_end_date: response.usage_end_date,
+                    max_nights_of_deal: response.max_nights_of_deal,
+                    min_nights: response.min_nights,
+                    applicable_days: response.applicable_days,
+                });
+            } catch (err) {
+                setError('Error fetching deal data');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchDealData();
+    }, [params.slug, params.dealId]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -41,22 +80,16 @@ const CreateDealPage = ({ params }: { params: { slug: string } }) => {
     };
 
     const handleDealTypeChange = (type: string) => {
-        setDealType(type);
         setFormData({ ...formData, deal_type: type });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setLoading(true);
-        setError(null);  // Clear previous errors
         try {
-            await createDeal(params.slug, formData);
+            await updateDeal(params.slug, params.dealId, formData);
             router.push(`/villas/${params.slug}/deals`);
         } catch (err) {
-            console.log(err);
             setError(err);
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -64,10 +97,14 @@ const CreateDealPage = ({ params }: { params: { slug: string } }) => {
         return <Text>Loading...</Text>;
     }
 
+    if (error) {
+        return <Text>{error}</Text>;
+    }
+
     return (
         <form onSubmit={handleSubmit}>
             <Fieldset>
-                <Legend>Create New Deal</Legend>
+                <Legend>Edit Deal</Legend>
                 <FieldGroup>
                     <Field>
                         <Label>Name</Label>
@@ -82,7 +119,7 @@ const CreateDealPage = ({ params }: { params: { slug: string } }) => {
                     <Field>
                         <Dropdown>
                             <DropdownButton outline>
-                                {dealType}
+                                {formData.deal_type}
                             </DropdownButton>
                             <DropdownMenu>
                                 <DropdownItem onClick={() => handleDealTypeChange('PERCENTAGE')}>Percentage</DropdownItem>
@@ -91,7 +128,7 @@ const CreateDealPage = ({ params }: { params: { slug: string } }) => {
                         </Dropdown>
                     </Field>
                     <Field>
-                        <Label>Discount Value ({dealType === 'PERCENTAGE' ? '%' : 'AED'})</Label>
+                        <Label>Discount Value ({formData.deal_type === 'PERCENTAGE' ? '%' : 'AED'})</Label>
                         <Input
                             name="discount_value"
                             type="number"
@@ -176,7 +213,7 @@ const CreateDealPage = ({ params }: { params: { slug: string } }) => {
                         </CheckboxGroup>
                     </Fieldset>
                 </FieldGroup>
-                <Button className="mt-8 hover:cursor-pointer" type="submit">Create Deal</Button>
+                <Button className="mt-8 hover:cursor-pointer" type="submit">Update Deal</Button>
                 {error && typeof error === 'string' && <Text className="text-red-500 mt-4">{error}</Text>}
                 {error && error?.non_field_errors && <Text className="text-red-500 mt-4">{error}</Text>}
             </Fieldset>
@@ -184,4 +221,4 @@ const CreateDealPage = ({ params }: { params: { slug: string } }) => {
     );
 };
 
-export default CreateDealPage;
+export default DealFormPage;

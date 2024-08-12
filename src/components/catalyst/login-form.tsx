@@ -16,7 +16,6 @@ const LoginForm: React.FC = () => {
 
         try {
             const data = await loginUser(username, password);
-            console.log('Token:', data.token);
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 setError(error.response?.data?.detail || 'Failed to log in');

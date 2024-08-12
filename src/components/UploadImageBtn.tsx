@@ -19,7 +19,6 @@ function UploadImageBtn({ slug }: { slug: string }) {
         if (selectedFile) {
             try {
                 const response = await uploadVillaImages(slug, selectedFile)
-                console.log(response)
                 setUploadStatus('Image uploaded successfully!')
             } catch (error) {
                 setUploadStatus('Failed to upload image.')

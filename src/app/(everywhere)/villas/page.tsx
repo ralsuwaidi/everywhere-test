@@ -30,7 +30,6 @@ export default function VillasPage() {
             try {
                 setLoading(true);
                 const data = await getVillas();
-                console.log('Fetched villas:', data);
                 setVillas(data);
                 setError(null);
             } catch (error) {

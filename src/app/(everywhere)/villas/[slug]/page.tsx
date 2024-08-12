@@ -25,7 +25,6 @@ export default function Page({ params }: { params: { slug: string } }) {
 
             try {
                 const data = await getVillaBySlug(params.slug);
-                console.log(data);
                 setVilla(data);
             } catch (err) {
                 setError('Failed to fetch villa data. Please try again later.');

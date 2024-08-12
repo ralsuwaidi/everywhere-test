@@ -47,7 +47,6 @@ export default function Page() {
         }
         data.rooms = rooms;
 
-        console.log(data);
 
         try {
             const response = await createVilla(data);

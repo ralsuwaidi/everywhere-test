@@ -12,7 +12,6 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use((config) => {
   const token = getAuthToken();
-  console.log(token);
   if (token) {
     config.headers["Authorization"] = `Token ${token}`;
   }

@@ -57,7 +57,6 @@ export default function Sidebar({ children }: SidebarProps) {
     const { user, fetchCurrentUser } = useAuthStore();
 
     useEffect(() => {
-        console.log(user, "dwww");
         if (user === null) {
             const fetchData = async () => {
                 await fetchCurrentUser();
@@ -117,8 +116,8 @@ export default function Sidebar({ children }: SidebarProps) {
                     <SidebarHeader>
                         <Dropdown>
                             <DropdownButton as={SidebarItem} className="lg:mb-2.5">
-                                <Avatar src="https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" />
-                                <SidebarLabel>Tailwind Labs</SidebarLabel>
+                                <Avatar slot="icon" initials="OW" className="bg-purple-500 text-white" />
+                                <SidebarLabel>Everywhere</SidebarLabel>
                                 <ChevronDownIcon />
                             </DropdownButton>
                             <DropdownMenu className="min-w-80 lg:min-w-64" anchor="bottom start">
@@ -128,17 +127,21 @@ export default function Sidebar({ children }: SidebarProps) {
                                 </DropdownItem>
                                 <DropdownDivider />
                                 <DropdownItem href="/teams/1">
-                                    <Avatar slot="icon" src="https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" />
-                                    <DropdownLabel>Tailwind Labs</DropdownLabel>
+                                    <Avatar slot="icon" initials="OW" className="bg-purple-500 text-white" />
+                                    <DropdownLabel>Owner</DropdownLabel>
                                 </DropdownItem>
                                 <DropdownItem href="/teams/2">
-                                    <Avatar slot="icon" initials="WC" className="bg-purple-500 text-white" />
-                                    <DropdownLabel>Workcation</DropdownLabel>
+                                    <Avatar slot="icon" initials="US" className="bg-green-500 text-white" />
+                                    <DropdownLabel>User</DropdownLabel>
+                                </DropdownItem>
+                                <DropdownItem href="/teams/3">
+                                    <Avatar slot="icon" initials="GU" className="bg-blue-500 text-white" />
+                                    <DropdownLabel>Guest</DropdownLabel>
                                 </DropdownItem>
                                 <DropdownDivider />
                                 <DropdownItem href="/teams/create">
                                     <PlusIcon />
-                                    <DropdownLabel>New team&hellip;</DropdownLabel>
+                                    <DropdownLabel>New Account&hellip;</DropdownLabel>
                                 </DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
